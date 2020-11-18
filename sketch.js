@@ -1,7 +1,6 @@
-
 var monkey , monkey_running
 var banana ,bananaImage, obstacle, obstacleImage
-var FoodGroup, obstacleGroup
+var foodGroup, obstacleGroup
 var score
 
 function preload(){
@@ -30,6 +29,8 @@ function setup() {
   //console.log(ground.x)
   
   score = 0;
+  foodGroup = createGroup();
+  obstacleGroup = createGroup();
   
 }
 
@@ -47,7 +48,14 @@ function draw() {
   
   score = score + Math.round(getFrameRate()/60);
   
-  
+ if (obstacleGroup.isTouching(monkey)){
+    obstacleGroup.setVelocityXEach(0);
+    foodGroup.setVelocityXEach(0);
+    obstacleGroup.setLifetimeEach(-1);
+    foodGroup.setLifetimeEach(-1);
+    ground.velocityX = 0;
+
+  }
     
   
   if(keyDown("space") && monkey.y >= 314){
@@ -65,9 +73,7 @@ function draw() {
       bananas();
       
     }
-
   
-
   drawSprites();
 }
 
@@ -79,6 +85,8 @@ function obstacles(){
   obstacle.lifetime = 150; 
   obstacle.scale = 0.1;
   
+  obstacleGroup.add(obstacle);
+  
 }
 
 function bananas(){
@@ -89,7 +97,10 @@ function bananas(){
   banana.lifetime = 150; 
   banana.scale = 0.1;
   
+  foodGroup.add(banana);
+  
 }
+
 
 
 
